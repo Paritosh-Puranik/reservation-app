@@ -26,7 +26,7 @@
                     </td>
                     <td>{{ reservation.peopleCount | number }}</td>
                     <td>{{ reservation.source || '-'}}</td>
-                    <td>{{ reservation.reservedFor | date: 'dd-mm-yyyy' }}</td>
+                    <td>{{ reservation.reservedFor | date: 'medium' }}</td>
                 </tr>
             </tbody>
         </table>
