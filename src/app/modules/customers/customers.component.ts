@@ -28,6 +28,7 @@ export class CustomersComponent extends Base implements OnInit {
     total: number = 0;
     pagesSizeArray: number[] = [10, 20, 30, 40, 50, 60, 70];
     filter = new FormControl('', { nonNullable: true });
+    filterValued: string = '';
 
     @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
@@ -53,7 +54,7 @@ export class CustomersComponent extends Base implements OnInit {
     applyFilter(filterEvent: Event) {
         let filterValue = (filterEvent.target as HTMLInputElement)?.value ?? '';
         filterValue = filterValue.trim();
-        filterValue = filterValue.toLowerCase();
+        this.filterValued = filterValue = filterValue.toLowerCase();
         let data = this.originalReservationArray ?? [];
         this.reservationArray = data.filter((item: any) => {
             return JSON.stringify(item)
@@ -63,13 +64,30 @@ export class CustomersComponent extends Base implements OnInit {
 			(this.page - 1) * this.pageSize,
 			(this.page - 1) * this.pageSize + this.pageSize,
 		);
+        const arrayLength = data.filter((item: any) => {
+            return JSON.stringify(item)
+                .toLowerCase()
+                .includes(filterValue.toLowerCase());
+        })
+        this.collectionSize = arrayLength?.length;
     }
 
 	refreshReservation() {
-		this.reservationArray = this.originalReservationArray.map((reservation, i) => ({ ...reservation })).slice(
-			(this.page - 1) * this.pageSize,
-			(this.page - 1) * this.pageSize + this.pageSize,
-		);
+        if( this.filterValued) {
+            this.reservationArray = this.originalReservationArray.filter((item: any) => {
+                return JSON.stringify(item)
+                    .toLowerCase()
+                    .includes(this.filterValued.toLowerCase());
+            }).slice(
+                (this.page - 1) * this.pageSize,
+                (this.page - 1) * this.pageSize + this.pageSize,
+            );
+        } else {
+            this.reservationArray = this.originalReservationArray.map((reservation, i) => ({ ...reservation })).slice(
+                (this.page - 1) * this.pageSize,
+                (this.page - 1) * this.pageSize + this.pageSize,
+            );
+        }
 	}
 
     getAllReservations() {
