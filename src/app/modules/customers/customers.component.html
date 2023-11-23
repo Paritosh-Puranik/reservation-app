@@ -46,14 +46,14 @@
                     [pageSize]="pageSize"
                     [maxSize]="5"
                     [rotate]="true"
-                    (pageChange)="refreshCountries()"
+                    (pageChange)="refreshReservation()"
                 >
                 </ngb-pagination>
             </div>
         </div>
         <div class="col-md-6 col-sm-6">
             <div class="d-flex justify-content-end align-items-center">
-                <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshCountries()">
+                <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshReservation()">
                     <option *ngFor="let pageSize of pagesSizeArray" [ngValue]="pageSize">{{pageSize}} items per page</option>          
                 </select>
             </div>

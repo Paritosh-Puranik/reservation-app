@@ -52,20 +52,20 @@ export class CustomersComponent extends Base implements OnInit {
 
     applyFilter(filterEvent: Event) {
         let filterValue = (filterEvent.target as HTMLInputElement)?.value ?? '';
-        if(filterValue && filterValue.length > 2) {
-            filterValue = filterValue.trim();
-            filterValue = filterValue.toLowerCase();
-            let data = this.originalReservationArray ?? [];
-            this.reservationArray = data.filter((item: any) => {
-                return JSON.stringify(item)
-                    .toLowerCase()
-                    .includes(filterValue.toLowerCase());
-            });
-        }
-       
+        filterValue = filterValue.trim();
+        filterValue = filterValue.toLowerCase();
+        let data = this.originalReservationArray ?? [];
+        this.reservationArray = data.filter((item: any) => {
+            return JSON.stringify(item)
+                .toLowerCase()
+                .includes(filterValue.toLowerCase());
+        }).slice(
+			(this.page - 1) * this.pageSize,
+			(this.page - 1) * this.pageSize + this.pageSize,
+		);
     }
 
-	refreshCountries() {
+	refreshReservation() {
 		this.reservationArray = this.originalReservationArray.map((reservation, i) => ({ ...reservation })).slice(
 			(this.page - 1) * this.pageSize,
 			(this.page - 1) * this.pageSize + this.pageSize,
@@ -80,7 +80,7 @@ export class CustomersComponent extends Base implements OnInit {
                 this.reservationArray = user;
                 this.total = this.reservationArray?.length;
                 this.collectionSize = this.reservationArray?.length;
-                this.refreshCountries();
+                this.refreshReservation();
             }
         })
     }
